@@ -1,0 +1,31 @@
+server:
+  port: 9988
+
+spring:
+  application:
+    name: sentinel-getway-example
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    default-property-inclusion: non_null
+
+  cloud:
+    sentinel:
+      transport:
+        dashboard: localhost:8080
+    #路由转发
+    gateway:
+      routes:
+        - predicates:
+          - Path=/java/**
+          filters:
+          - StripPrefix=1
+          uri: "http://localhost:8083/hello"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: gateway
+
+
